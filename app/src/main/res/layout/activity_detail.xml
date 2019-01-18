@@ -90,8 +90,6 @@
         </LinearLayout>
     </RelativeLayout>
 
-
-
-
+    <include layout="@layout/view_progress"/>
 
 </FrameLayout>
