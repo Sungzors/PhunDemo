@@ -2,7 +2,10 @@ package com.ducks.sungwon.phundemo.structure.detail
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
+import android.transition.Transition
 import android.widget.ImageView
 import com.ducks.sungwon.phundemo.R
 import com.ducks.sungwon.phundemo.manager.RebelScumManager
@@ -29,6 +32,9 @@ class DetailActivity : CoreActivity(){
         } ?: kotlin.run {
             ad_call.visibility = ImageView.GONE
         }
+
+        ViewCompat.setTransitionName(ad_image_header, Constants.TransitionKeys.VIEW_IMAGE_HEADER)
+
         setUpClickers()
     }
 
@@ -50,11 +56,7 @@ class DetailActivity : CoreActivity(){
     }
 
     private fun setUpViews(){
-        mRebelScumManager.mRebelList[mPosition].image?.let {
-            Picasso.with(this).load(it).placeholder(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
-        } ?: kotlin.run {
-            Picasso.with(this).load(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
-        }
+        loadTransition()
         ad_date.text = SimpleDateFormat("MMM dd, yyyy' at 'h:mma").format(mRebelScumManager.mRebelList[mPosition].date)
         ad_title.text = mRebelScumManager.mRebelList[mPosition].title
         ad_text.text = mRebelScumManager.mRebelList[mPosition].description
@@ -78,6 +80,54 @@ class DetailActivity : CoreActivity(){
                 type = "text/plain"
             }
             startActivity(Intent.createChooser(sendIntent, "Share using..."))
+        }
+    }
+
+    private fun loadTransition(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && addTransitionListener()) {
+            loadFullSizeImage()
+        } else {
+            loadFullSizeImage()
+        }
+    }
+
+    private fun loadFullSizeImage(){
+        mRebelScumManager.mRebelList[mPosition].image?.let {
+            Picasso.with(this).load(it).placeholder(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
+        } ?: kotlin.run {
+            Picasso.with(this).load(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
+        }
+    }
+
+    private fun addTransitionListener() : Boolean {
+        val transition = window.sharedElementEnterTransition
+
+        transition?.let {
+            it.addListener( object : Transition.TransitionListener {
+                override fun onTransitionEnd(transition: Transition?) {
+                    loadFullSizeImage()
+                    transition!!.removeListener(this)
+                }
+
+                override fun onTransitionResume(transition: Transition?) {
+
+                }
+
+                override fun onTransitionPause(transition: Transition?) {
+                }
+
+                override fun onTransitionCancel(transition: Transition?) {
+                    transition!!.removeListener(this)
+                }
+
+                override fun onTransitionStart(transition: Transition?) {
+                }
+            }
+
+            )
+            return true
+        } ?: kotlin.run {
+            return false
         }
     }
 }

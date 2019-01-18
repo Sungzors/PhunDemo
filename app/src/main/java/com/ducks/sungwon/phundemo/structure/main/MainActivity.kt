@@ -2,7 +2,11 @@ package com.ducks.sungwon.phundemo.structure.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.widget.LinearLayout
 import com.ducks.sungwon.phundemo.R
 import com.ducks.sungwon.phundemo.manager.RebelScumManager
@@ -70,7 +74,11 @@ class MainActivity : CoreActivity() {
                 R.id.cm_container ->{
                     val intent = Intent(context, DetailActivity::class.java)
                     intent.putExtra(Constants.IntentKeys.REBEL_ID, it.second)
-                    startActivity(intent)
+                    val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            this,
+                            Pair<View, String>(it.third, Constants.TransitionKeys.VIEW_IMAGE_HEADER)
+                    )
+                    ActivityCompat.startActivity(this, intent, activityOptions.toBundle())
                 }
                 R.id.cm_share -> {
                     val sendIntent = Intent().apply {
