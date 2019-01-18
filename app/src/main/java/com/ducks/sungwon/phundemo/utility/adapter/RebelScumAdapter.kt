@@ -13,7 +13,8 @@ import com.ducks.sungwon.phundemo.model.RebelScum
 import com.ducks.sungwon.phundemo.utility.CircleTransform
 import com.squareup.picasso.Picasso
 
-class RebelScumAdapter(list: ArrayList<RebelScum>, context: Context, onClick: (Int) -> Unit) : RecyclerView.Adapter<RebelScumAdapter.ViewHolder>(){
+//onclick requires a callback of the id of the item clicked and the position
+class RebelScumAdapter(list: MutableList<RebelScum>, context: Context, onClick: (Pair<Int, Int>) -> Unit) : RecyclerView.Adapter<RebelScumAdapter.ViewHolder>(){
 
     private val mRecyclerList = list
     private val mContext = context
@@ -38,10 +39,10 @@ class RebelScumAdapter(list: ArrayList<RebelScum>, context: Context, onClick: (I
         }
         viewHolder.description.text = mRecyclerList[pos].description
         viewHolder.share.setOnClickListener {
-            mClick(R.id.cm_share)
+            mClick(Pair(R.id.cm_share, pos))
         }
         viewHolder.container.setOnClickListener {
-            mClick(R.id.cm_container)
+            mClick(Pair(R.id.cm_container, pos))
         }
     }
 
