@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import kotlinx.android.synthetic.main.view_toolbar.*
 import java.util.ArrayList
 
 abstract class CoreActivity : AppCompatActivity() {
