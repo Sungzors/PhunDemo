@@ -14,13 +14,16 @@
 
         <activity
             android:name=".structure.main.MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-
+        <activity
+            android:name=".structure.detail.DetailActivity"
+            android:launchMode="singleTop"/>
     </application>
 </manifest>

@@ -4,11 +4,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.ShareActionProvider
 import android.widget.LinearLayout
 import com.ducks.sungwon.phundemo.R
 import com.ducks.sungwon.phundemo.manager.RebelScumManager
 import com.ducks.sungwon.phundemo.structure.core.CoreActivity
+import com.ducks.sungwon.phundemo.structure.detail.DetailActivity
+import com.ducks.sungwon.phundemo.utility.Constants
 import com.ducks.sungwon.phundemo.utility.adapter.RebelScumAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -19,7 +20,6 @@ class MainActivity : CoreActivity() {
 
     private lateinit var mAdapter: RebelScumAdapter
     private lateinit var mRebelScumManager: RebelScumManager
-    private var mShareActionProvider: ShareActionProvider? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +27,10 @@ class MainActivity : CoreActivity() {
         //initiate api call once per activity
         mRebelScumManager = ViewModelProviders.of(this).get(RebelScumManager::class.java)
         makeCall()
+        //retry clicker
+        am_retry.setOnClickListener{
+            makeCall()
+        }
     }
 
     override fun onStart() {
@@ -65,7 +69,9 @@ class MainActivity : CoreActivity() {
         mAdapter = RebelScumAdapter(mRebelScumManager.mRebelList, context, {
             when(it.first){
                 R.id.cm_container ->{
-//                    val intent = Intent(context, )
+                    val intent = Intent(context, DetailActivity::class.java)
+                    intent.putExtra(Constants.IntentKeys.REBEL_ID, it.second)
+                    startActivity(intent)
                 }
                 R.id.cm_share -> {
                     val sendIntent = Intent().apply {
