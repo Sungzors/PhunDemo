@@ -10,8 +10,9 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import kotlinx.android.synthetic.main.view_progress.*
 import kotlinx.android.synthetic.main.view_toolbar.*
-import java.util.ArrayList
+import java.util.*
 
 abstract class CoreActivity : AppCompatActivity() {
     /*Properties*/
@@ -143,7 +144,6 @@ abstract class CoreActivity : AppCompatActivity() {
     /*Navigation - Back Button*/
     override fun onBackPressed() {
         if (interruptedByListener()) {
-
             return
         } else if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
