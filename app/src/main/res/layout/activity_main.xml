@@ -20,4 +20,24 @@
     </LinearLayout>
 
     <include layout="@layout/view_progress"/>
+    <LinearLayout
+        android:id="@+id/am_no_net"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_internet_try_again"
+            android:layout_gravity="center_horizontal"/>
+        <Button
+            android:id="@+id/am_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retry"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
 </FrameLayout>
