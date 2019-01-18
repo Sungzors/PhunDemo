@@ -16,8 +16,9 @@
         android:layout_marginBottom="15dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="7"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/cm_title"
@@ -55,6 +56,8 @@
         android:textSize="14sp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:maxLines="5"
+        android:ellipsize="end"
         android:text="hello"/>
 
     <TextView

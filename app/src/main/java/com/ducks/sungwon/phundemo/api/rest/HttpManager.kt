@@ -1,5 +1,6 @@
 package com.ducks.sungwon.phundemo.api.rest
 
+import com.ducks.sungwon.phundemo.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,6 +36,7 @@ class HttpManager {
 
             mRetrofit = Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create(mGson))
+                    .baseUrl(BuildConfig.BASE_URL)
                     .client(it)
                     .build()
         }

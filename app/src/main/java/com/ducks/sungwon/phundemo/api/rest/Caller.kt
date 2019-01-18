@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface Caller {
 
-    @GET("https://raw.githubusercontent.com/phunware-services/dev-interview-homework/master/feed.json")
+    @GET("feed.json")
     fun getRebelScum(): Call<ArrayList<RebelScumResponse>>
 
 }

@@ -15,9 +15,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", 'BASE_URL', '"https://raw.githubusercontent.com/phunware-services/dev-interview-homework/master/"'
+        }
+        staging {
+            buildConfigField "String", 'BASE_URL', '"https://raw.githubusercontent.com/phunware-services/dev-interview-homework/master/"'
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", 'BASE_URL', '"https://raw.githubusercontent.com/phunware-services/dev-interview-homework/master/"'
         }
     }
 }

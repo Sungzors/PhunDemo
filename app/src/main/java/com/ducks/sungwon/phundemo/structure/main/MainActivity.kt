@@ -3,9 +3,9 @@ package com.ducks.sungwon.phundemo.structure.main
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.ShareActionProvider
 import android.widget.LinearLayout
-import android.widget.ShareActionProvider
 import com.ducks.sungwon.phundemo.R
 import com.ducks.sungwon.phundemo.manager.RebelScumManager
 import com.ducks.sungwon.phundemo.structure.core.CoreActivity
@@ -24,7 +24,6 @@ class MainActivity : CoreActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.app_name)
-        showProgress()
         //initiate api call once per activity
         mRebelScumManager = ViewModelProviders.of(this).get(RebelScumManager::class.java)
         makeCall()
@@ -50,12 +49,15 @@ class MainActivity : CoreActivity() {
 
     //If offline or the call fails, displays a message prompting user to try again
     private fun makeCall(){
+        showProgress()
         mRebelScumManager.getRebelList {
             if(it){
                 am_no_net.visibility = LinearLayout.GONE
+                setUpRecycler()
             } else {
                 am_no_net.visibility = LinearLayout.VISIBLE
             }
+            hideProgress()
         }
     }
 
@@ -68,27 +70,30 @@ class MainActivity : CoreActivity() {
                 R.id.cm_share -> {
                     val sendIntent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, mRebelScumManager.mRebelList[it.second].title)
-                        putExtra(Intent.EXTRA_SUBJECT, mRebelScumManager.mRebelList[it.second].description)
+                        putExtra(Intent.EXTRA_TITLE, mRebelScumManager.mRebelList[it.second].title)
+                        putExtra(Intent.EXTRA_TEXT, mRebelScumManager.mRebelList[it.second].description)
                         type = "text/plain"
                     }
-                    mShareActionProvider?.setShareIntent(sendIntent)
+                    startActivity(Intent.createChooser(sendIntent, "Share using..."))
                 }
             }
         })
+        am_recycler.setHasFixedSize(true)
+        am_recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        am_recycler.adapter = mAdapter
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate menu resource file.
-        menuInflater.inflate(R.menu.menu_share, menu)
-
-        // Locate MenuItem with ShareActionProvider
-        menu.findItem(R.id.menu_item_share).also { menuItem ->
-            // Fetch and store ShareActionProvider
-            mShareActionProvider = menuItem.actionProvider as? ShareActionProvider
-        }
-
-        // Return true to display menu
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate menu resource file.
+//        menuInflater.inflate(R.menu.menu_share, menu)
+//
+//        // Locate MenuItem with ShareActionProvider
+//        menu.findItem(R.id.menu_item_share).also { menuItem ->
+//            // Fetch and store ShareActionProvider
+//            mShareActionProvider = MenuItemCompat.getActionProvider(menuItem) as ShareActionProvider
+//        }
+//
+//        // Return true to display menu
+//        return true
+//    }
 }
