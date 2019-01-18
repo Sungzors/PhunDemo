@@ -1,6 +1,5 @@
 package com.ducks.sungwon.phundemo.manager
 
-import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.ducks.sungwon.phundemo.api.response.RebelScumResponse
 import com.ducks.sungwon.phundemo.api.rest.Rest
@@ -9,7 +8,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RebelScumManager : ViewModel() {
+class RebelScumManager {
+
+    object Holder {
+        val instance = RebelScumManager()
+    }
+
+    companion object {
+        val instance: RebelScumManager by lazy { Holder.instance }
+    }
 
     val mRebelList = mutableListOf<RebelScum>()
     val TAG = "RebelScumManager"

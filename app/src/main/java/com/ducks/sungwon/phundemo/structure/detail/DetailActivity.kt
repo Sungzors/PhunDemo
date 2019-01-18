@@ -1,7 +1,7 @@
 package com.ducks.sungwon.phundemo.structure.detail
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import com.ducks.sungwon.phundemo.R
@@ -23,7 +23,7 @@ class DetailActivity : CoreActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPosition = intent.getIntExtra(Constants.IntentKeys.REBEL_ID, 0)
-        mRebelScumManager = ViewModelProviders.of(this).get(RebelScumManager::class.java)
+        mRebelScumManager = RebelScumManager.instance
         mRebelScumManager.mRebelList[mPosition].phone?.let {
             ad_call.visibility = ImageView.VISIBLE
         } ?: kotlin.run {
@@ -51,11 +51,11 @@ class DetailActivity : CoreActivity(){
 
     private fun setUpViews(){
         mRebelScumManager.mRebelList[mPosition].image?.let {
-            Picasso.with(this).load(it).into(ad_image_header)
+            Picasso.with(this).load(it).placeholder(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
         } ?: kotlin.run {
-            Picasso.with(this).load(R.drawable.placeholder_nomoon).into(ad_image_header)
+            Picasso.with(this).load(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
         }
-        ad_date.text = SimpleDateFormat("MM-dd-yyyy' at 'h:mm:a").format(mRebelScumManager.mRebelList[mPosition].date)
+        ad_date.text = SimpleDateFormat("MMM dd, yyyy' at 'h:mma").format(mRebelScumManager.mRebelList[mPosition].date)
         ad_title.text = mRebelScumManager.mRebelList[mPosition].title
         ad_text.text = mRebelScumManager.mRebelList[mPosition].description
     }
@@ -65,10 +65,9 @@ class DetailActivity : CoreActivity(){
             onBackPressed()
         }
         ad_call.setOnClickListener {
-            val phoneIntent = Intent().apply {
-                action = Intent.ACTION_DIAL
-                putExtra(Intent.EXTRA_PHONE_NUMBER, mRebelScumManager.mRebelList[mPosition].phone)
-            }
+            val re = Regex("[^A-Za-z0-9 ]")
+            val phoneIntent = Intent(Intent.ACTION_DIAL)
+            phoneIntent.data = Uri.parse("tel:" + re.replace(mRebelScumManager.mRebelList[mPosition].phone!!, ""))
             startActivity(phoneIntent)
         }
         ad_share.setOnClickListener {

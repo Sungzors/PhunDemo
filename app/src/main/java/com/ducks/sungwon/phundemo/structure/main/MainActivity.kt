@@ -1,6 +1,5 @@
 package com.ducks.sungwon.phundemo.structure.main
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -25,7 +24,7 @@ class MainActivity : CoreActivity() {
         super.onCreate(savedInstanceState)
         setTitle(R.string.app_name)
         //initiate api call once per activity
-        mRebelScumManager = ViewModelProviders.of(this).get(RebelScumManager::class.java)
+        mRebelScumManager = RebelScumManager.instance
         makeCall()
         //retry clicker
         am_retry.setOnClickListener{
