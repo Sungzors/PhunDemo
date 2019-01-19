@@ -11,6 +11,7 @@ import com.ducks.sungwon.phundemo.R
 import com.ducks.sungwon.phundemo.manager.RebelScumManager
 import com.ducks.sungwon.phundemo.structure.core.CoreActivity
 import com.ducks.sungwon.phundemo.utility.Constants
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import java.text.SimpleDateFormat
@@ -32,6 +33,7 @@ class DetailActivity : CoreActivity(){
         } ?: kotlin.run {
             ad_call.visibility = ImageView.GONE
         }
+
 
         ViewCompat.setTransitionName(ad_image_header, Constants.TransitionKeys.VIEW_IMAGE_HEADER)
 
@@ -92,8 +94,20 @@ class DetailActivity : CoreActivity(){
     }
 
     private fun loadFullSizeImage(){
+        supportPostponeEnterTransition()
         mRebelScumManager.mRebelList[mPosition].image?.let {
-            Picasso.with(this).load(it).placeholder(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
+            Picasso.with(this).load(it).resize(1080, 800).centerCrop().into(
+                    ad_image_header,
+                     object : Callback{
+                        override fun onSuccess() {
+                            supportStartPostponedEnterTransition()
+                        }
+
+                        override fun onError() {
+                            supportStartPostponedEnterTransition()
+                            Picasso.with(context).load(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
+                        }
+                    })
         } ?: kotlin.run {
             Picasso.with(this).load(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
         }
@@ -129,5 +143,9 @@ class DetailActivity : CoreActivity(){
         } ?: kotlin.run {
             return false
         }
+    }
+
+    private fun detectVisibility(view: ImageView){
+
     }
 }
