@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.ducks.sungwon.phundemo.R
 import com.ducks.sungwon.phundemo.model.RebelScum
 import com.ducks.sungwon.phundemo.utility.CircleTransform
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 //onclick requires a callback of the id of the item clicked, the position, and the imageview holding the preview thumbnail
@@ -33,8 +34,16 @@ class RebelScumAdapter(list: MutableList<RebelScum>, context: Context, onClick: 
                 mRecyclerList[pos].locationline2
         )
         mRecyclerList[pos].image?.let {
-            Picasso.with(mContext).load(it).transform(CircleTransform()).into(viewHolder.picture)
+            Picasso.with(mContext).load(it).transform(CircleTransform()).into(viewHolder.picture,  object : Callback{
+                override fun onSuccess() {
+                }
+                //404 error handling
+                override fun onError() {
+                    Picasso.with(mContext).load(R.drawable.placeholder_nomoon).transform(CircleTransform()).into(viewHolder.picture)
+                }
+            })
         } ?: kotlin.run {
+            //null error handling
             Picasso.with(mContext).load(R.drawable.placeholder_nomoon).transform(CircleTransform()).into(viewHolder.picture)
         }
         viewHolder.description.text = mRecyclerList[pos].description

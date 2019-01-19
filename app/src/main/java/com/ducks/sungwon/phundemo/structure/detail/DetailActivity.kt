@@ -109,6 +109,7 @@ class DetailActivity : CoreActivity(){
                         }
                     })
         } ?: kotlin.run {
+            supportStartPostponedEnterTransition()
             Picasso.with(this).load(R.drawable.placeholder_nomoon).resize(1080, 800).centerCrop().into(ad_image_header)
         }
     }
@@ -141,11 +142,14 @@ class DetailActivity : CoreActivity(){
             )
             return true
         } ?: kotlin.run {
+
             return false
         }
     }
 
     private fun detectVisibility(view: ImageView){
+        view.viewTreeObserver.addOnGlobalLayoutListener { object :
 
+        }
     }
 }
